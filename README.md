@@ -1,6 +1,6 @@
 # WebEscher
 
-React + TypeScript + Vite — Escher-style tiling editor (17 wallpaper groups).
+Escher-like periodic pavement editing. React + TypeScript + Vite — 17 wallpaper groups.
 
 ## Deployment (Clever Cloud)
 
