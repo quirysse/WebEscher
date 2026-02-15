@@ -1,0 +1,57 @@
+{
+  "app": {
+    "title": "WebEscher",
+    "subtitle": "Éditeur de pavage de plan inspiré d'Escher"
+  },
+  "sidebar": {
+    "groupSelector": {
+      "title": "Configuration de pavage",
+      "family": {
+        "oblique": "Oblique",
+        "rectangular": "Rectangulaire",
+        "rhombic": "Rhombique",
+        "square": "Carré",
+        "hexagonal": "Hexagonal"
+      },
+      "placeholder": "Choisir un groupe..."
+    },
+    "groups": {
+      "p1": "p1 – Sans symétrie",
+      "p2": "p2 – Rotation 180°",
+      "pm": "pm – Réflexion verticale",
+      "pg": "pg – Glissement",
+      "pmm": "pmm – Réflexions perpendiculaires",
+      "pmg": "pmg – Réflexion + glissement",
+      "pgg": "pgg – Glissements perpendiculaires",
+      "cmm": "cmm – Réflexions diagonales",
+      "cm": "cm – Réflexion unique",
+      "p4": "p4 – Rotation 90°",
+      "p4m": "p4m – Rotation 90° + réflexions",
+      "p4g": "p4g – Rotation 90° + glissements",
+      "p3": "p3 – Rotation 120°",
+      "p3m1": "p3m1 – Rotation 120° + réflexions",
+      "p31m": "p31m – Rotation 120° + réflexions (alt.)",
+      "p6": "p6 – Rotation 60°",
+      "p6m": "p6m – Rotation 60° + réflexions"
+    },
+    "shapeSelector": {
+      "title": "Forme de base",
+      "square": "Carré",
+      "triangle": "Triangle",
+      "hexagon": "Hexagone"
+    },
+    "colorPanel": {
+      "title": "Couleurs"
+    },
+    "toolbar": {
+      "reset": "Réinitialiser la forme",
+      "smooth": "Lisser les bords",
+      "undo": "Annuler",
+      "redo": "Rétablir",
+      "export": "Exporter"
+    }
+  },
+  "canvas": {
+    "placeholder": "Sélectionnez un groupe de pavage pour commencer"
+  }
+}

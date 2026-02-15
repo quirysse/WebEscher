@@ -1,0 +1,57 @@
+{
+  "app": {
+    "title": "WebEscher",
+    "subtitle": "Escher-inspired plane tiling editor"
+  },
+  "sidebar": {
+    "groupSelector": {
+      "title": "Tiling configuration",
+      "family": {
+        "oblique": "Oblique",
+        "rectangular": "Rectangular",
+        "rhombic": "Rhombic",
+        "square": "Square",
+        "hexagonal": "Hexagonal"
+      },
+      "placeholder": "Choose a group..."
+    },
+    "groups": {
+      "p1": "p1 – No symmetry",
+      "p2": "p2 – 180° rotation",
+      "pm": "pm – Vertical reflection",
+      "pg": "pg – Glide",
+      "pmm": "pmm – Perpendicular reflections",
+      "pmg": "pmg – Reflection + glide",
+      "pgg": "pgg – Perpendicular glides",
+      "cmm": "cmm – Diagonal reflections",
+      "cm": "cm – Single reflection",
+      "p4": "p4 – 90° rotation",
+      "p4m": "p4m – 90° rotation + reflections",
+      "p4g": "p4g – 90° rotation + glides",
+      "p3": "p3 – 120° rotation",
+      "p3m1": "p3m1 – 120° rotation + reflections",
+      "p31m": "p31m – 120° rotation + reflections (alt.)",
+      "p6": "p6 – 60° rotation",
+      "p6m": "p6m – 60° rotation + reflections"
+    },
+    "shapeSelector": {
+      "title": "Base shape",
+      "square": "Square",
+      "triangle": "Triangle",
+      "hexagon": "Hexagon"
+    },
+    "colorPanel": {
+      "title": "Colors"
+    },
+    "toolbar": {
+      "reset": "Reset shape",
+      "smooth": "Smooth edges",
+      "undo": "Undo",
+      "redo": "Redo",
+      "export": "Export"
+    }
+  },
+  "canvas": {
+    "placeholder": "Select a tiling group to start"
+  }
+}

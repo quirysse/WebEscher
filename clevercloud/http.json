@@ -1,0 +1,8 @@
+{
+  "document_root": "dist",
+  "static_headers": {
+    "**/*": {
+      "Cache-Control": "public, max-age=31536000"
+    }
+  }
+}
