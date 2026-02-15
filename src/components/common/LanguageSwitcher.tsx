@@ -1,21 +1,35 @@
 import { useTranslation } from 'react-i18next'
 
+const LANGUAGES = [
+  { code: 'en', label: 'EN', flag: '🇺🇸' },
+  { code: 'fr', label: 'FR', flag: '🇫🇷' },
+  { code: 'it', label: 'IT', flag: '🇮🇹' },
+  { code: 'es', label: 'ES', flag: '🇪🇸' },
+  { code: 'ja', label: 'JA', flag: '🇯🇵' },
+] as const
+
 export function LanguageSwitcher() {
   const { i18n } = useTranslation()
-
-  const toggleLanguage = () => {
-    const next = i18n.language === 'fr' ? 'en' : 'fr'
-    i18n.changeLanguage(next)
-  }
+  const current = i18n.language?.split('-')[0] ?? 'en'
+  const currentLang = LANGUAGES.find((l) => l.code === current) ?? LANGUAGES[0]
 
   return (
-    <button
-      type="button"
-      onClick={toggleLanguage}
-      className="rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50"
-      aria-label={i18n.language === 'fr' ? 'Switch to English' : 'Passer en français'}
-    >
-      {i18n.language === 'fr' ? 'EN' : 'FR'}
-    </button>
+    <div className="flex items-center gap-1.5">
+      <span className="text-lg leading-none" aria-hidden>
+        {currentLang.flag}
+      </span>
+      <select
+        value={current}
+        onChange={(e) => i18n.changeLanguage(e.target.value)}
+        className="rounded-md border border-gray-300 bg-white py-1.5 pl-2 pr-7 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        aria-label="Language"
+      >
+        {LANGUAGES.map(({ code, label, flag }) => (
+          <option key={code} value={code}>
+            {flag} {label}
+          </option>
+        ))}
+      </select>
+    </div>
   )
 }

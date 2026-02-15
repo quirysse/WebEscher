@@ -1,0 +1,60 @@
+{
+  "app": {
+    "title": "WebEscher",
+    "subtitle": "Editor de teselados inspirado en Escher"
+  },
+  "sidebar": {
+    "open": "Abrir menú",
+    "close": "Cerrar menú",
+    "title": "Opciones",
+    "groupSelector": {
+      "title": "Configuración del teselado",
+      "family": {
+        "oblique": "Oblicuo",
+        "rectangular": "Rectangular",
+        "rhombic": "Rómbico",
+        "square": "Cuadrado",
+        "hexagonal": "Hexagonal"
+      },
+      "placeholder": "Elegir un grupo..."
+    },
+    "groups": {
+      "p1": "p1 – Sin simetría",
+      "p2": "p2 – Rotación 180°",
+      "pm": "pm – Reflexión vertical",
+      "pg": "pg – Deslizamiento",
+      "pmm": "pmm – Reflexiones perpendiculares",
+      "pmg": "pmg – Reflexión + deslizamiento",
+      "pgg": "pgg – Deslizamientos perpendiculares",
+      "cmm": "cmm – Reflexiones diagonales",
+      "cm": "cm – Reflexión única",
+      "p4": "p4 – Rotación 90°",
+      "p4m": "p4m – Rotación 90° + reflexiones",
+      "p4g": "p4g – Rotación 90° + deslizamientos",
+      "p3": "p3 – Rotación 120°",
+      "p3m1": "p3m1 – Rotación 120° + reflexiones",
+      "p31m": "p31m – Rotación 120° + reflexiones (alt.)",
+      "p6": "p6 – Rotación 60°",
+      "p6m": "p6m – Rotación 60° + reflexiones"
+    },
+    "shapeSelector": {
+      "title": "Forma base",
+      "square": "Cuadrado",
+      "triangle": "Triángulo",
+      "hexagon": "Hexágono"
+    },
+    "colorPanel": {
+      "title": "Colores"
+    },
+    "toolbar": {
+      "reset": "Restablecer forma",
+      "smooth": "Suavizar bordes",
+      "undo": "Deshacer",
+      "redo": "Rehacer",
+      "export": "Exportar"
+    }
+  },
+  "canvas": {
+    "placeholder": "Selecciona un grupo de teselado para comenzar"
+  }
+}

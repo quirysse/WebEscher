@@ -1,0 +1,60 @@
+{
+  "app": {
+    "title": "WebEscher",
+    "subtitle": "Editor di tassellature ispirato a Escher"
+  },
+  "sidebar": {
+    "open": "Apri menu",
+    "close": "Chiudi menu",
+    "title": "Opzioni",
+    "groupSelector": {
+      "title": "Configurazione tassellatura",
+      "family": {
+        "oblique": "Obliquo",
+        "rectangular": "Rettangolare",
+        "rhombic": "Rombico",
+        "square": "Quadrato",
+        "hexagonal": "Esagonale"
+      },
+      "placeholder": "Scegli un gruppo..."
+    },
+    "groups": {
+      "p1": "p1 – Nessuna simmetria",
+      "p2": "p2 – Rotazione 180°",
+      "pm": "pm – Riflessione verticale",
+      "pg": "pg – Scivolamento",
+      "pmm": "pmm – Riflessioni perpendicolari",
+      "pmg": "pmg – Riflessione + scivolamento",
+      "pgg": "pgg – Scivolamenti perpendicolari",
+      "cmm": "cmm – Riflessioni diagonali",
+      "cm": "cm – Riflessione singola",
+      "p4": "p4 – Rotazione 90°",
+      "p4m": "p4m – Rotazione 90° + riflessioni",
+      "p4g": "p4g – Rotazione 90° + scivolamenti",
+      "p3": "p3 – Rotazione 120°",
+      "p3m1": "p3m1 – Rotazione 120° + riflessioni",
+      "p31m": "p31m – Rotazione 120° + riflessioni (alt.)",
+      "p6": "p6 – Rotazione 60°",
+      "p6m": "p6m – Rotazione 60° + riflessioni"
+    },
+    "shapeSelector": {
+      "title": "Forma base",
+      "square": "Quadrato",
+      "triangle": "Triangolo",
+      "hexagon": "Esagono"
+    },
+    "colorPanel": {
+      "title": "Colori"
+    },
+    "toolbar": {
+      "reset": "Ripristina forma",
+      "smooth": "Smussa i bordi",
+      "undo": "Annulla",
+      "redo": "Ripeti",
+      "export": "Esporta"
+    }
+  },
+  "canvas": {
+    "placeholder": "Seleziona un gruppo di tassellatura per iniziare"
+  }
+}

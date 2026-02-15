@@ -1,0 +1,60 @@
+{
+  "app": {
+    "title": "WebEscher",
+    "subtitle": "エッシャー風平面タイル編集"
+  },
+  "sidebar": {
+    "open": "メニューを開く",
+    "close": "メニューを閉じる",
+    "title": "オプション",
+    "groupSelector": {
+      "title": "タイル設定",
+      "family": {
+        "oblique": "斜方",
+        "rectangular": "長方",
+        "rhombic": "菱方",
+        "square": "正方",
+        "hexagonal": "六方"
+      },
+      "placeholder": "グループを選択..."
+    },
+    "groups": {
+      "p1": "p1 – 対称性なし",
+      "p2": "p2 – 180°回転",
+      "pm": "pm – 垂直鏡映",
+      "pg": "pg – 映進",
+      "pmm": "pmm – 垂直鏡映",
+      "pmg": "pmg – 鏡映+映進",
+      "pgg": "pgg – 垂直映進",
+      "cmm": "cmm – 対角鏡映",
+      "cm": "cm – 単一鏡映",
+      "p4": "p4 – 90°回転",
+      "p4m": "p4m – 90°回転+鏡映",
+      "p4g": "p4g – 90°回転+映進",
+      "p3": "p3 – 120°回転",
+      "p3m1": "p3m1 – 120°回転+鏡映",
+      "p31m": "p31m – 120°回転+鏡映（別）",
+      "p6": "p6 – 60°回転",
+      "p6m": "p6m – 60°回転+鏡映"
+    },
+    "shapeSelector": {
+      "title": "基本形",
+      "square": "正方形",
+      "triangle": "三角形",
+      "hexagon": "六角形"
+    },
+    "colorPanel": {
+      "title": "色"
+    },
+    "toolbar": {
+      "reset": "形をリセット",
+      "smooth": "辺を滑らかに",
+      "undo": "元に戻す",
+      "redo": "やり直す",
+      "export": "エクスポート"
+    }
+  },
+  "canvas": {
+    "placeholder": "タイルグループを選択して開始"
+  }
+}
