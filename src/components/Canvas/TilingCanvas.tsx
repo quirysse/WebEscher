@@ -33,6 +33,13 @@ export function TilingCanvas() {
   const getRoleColor = useTilingStore((s) => s.getRoleColor)
   const roleColors = useTilingStore((s) => s.roleColors)
   const dragRef = useRef<number | null>(null)
+  const pinchRef = useRef<{
+    distance: number
+    centerScreenX: number
+    centerScreenY: number
+    startZoom: number
+    startPan: { x: number; y: number }
+  } | null>(null)
   const [viewState, setViewState] = useState({
     zoom: 1,
     pan: { x: TILE_SIZE / 2, y: TILE_SIZE / 2 },
@@ -247,20 +254,119 @@ export function TilingCanvas() {
       dragRef.current = null
     }
 
+    const getTouchScreenCoords = (touch: Touch) => {
+      const rect = canvas.getBoundingClientRect()
+      const scaleX = canvas.width / rect.width
+      const scaleY = canvas.height / rect.height
+      return {
+        screenX: (touch.clientX - rect.left) * scaleX,
+        screenY: (touch.clientY - rect.top) * scaleY,
+      }
+    }
+
+    const getPinchDistance = (t1: Touch, t2: Touch) => {
+      return Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY)
+    }
+
+    const getPinchCenter = (t1: Touch, t2: Touch) => {
+      const rect = canvas.getBoundingClientRect()
+      const scaleX = canvas.width / rect.width
+      const scaleY = canvas.height / rect.height
+      const cx = (t1.clientX + t2.clientX) / 2
+      const cy = (t1.clientY + t2.clientY) / 2
+      return {
+        screenX: (cx - rect.left) * scaleX,
+        screenY: (cy - rect.top) * scaleY,
+      }
+    }
+
+    const onTouchStart = (e: TouchEvent) => {
+      if (e.touches.length === 2) {
+        e.preventDefault()
+        const { zoom, pan } = zoomPanRef.current
+        const distance = getPinchDistance(e.touches[0], e.touches[1])
+        const center = getPinchCenter(e.touches[0], e.touches[1])
+        pinchRef.current = {
+          distance,
+          centerScreenX: center.screenX,
+          centerScreenY: center.screenY,
+          startZoom: zoom,
+          startPan: { ...pan },
+        }
+        dragRef.current = null
+      }
+      else if (e.touches.length === 1 && !pinchRef.current) {
+        const { screenX, screenY } = getTouchScreenCoords(e.touches[0])
+        const { x: worldX, y: worldY } = screenToWorld(screenX, screenY)
+        const index = hitTestHandle(worldX, worldY)
+        if (index !== null) {
+          dragRef.current = index
+        }
+      }
+    }
+
+    const onTouchMove = (e: TouchEvent) => {
+      if (e.touches.length === 2 && pinchRef.current) {
+        e.preventDefault()
+        const pinch = pinchRef.current
+        const currentDistance = getPinchDistance(e.touches[0], e.touches[1])
+        const center = getPinchCenter(e.touches[0], e.touches[1])
+        const cx = canvas.width / 2
+        const cy = canvas.height / 2
+        const ratio = currentDistance / pinch.distance
+        const newZoom = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, pinch.startZoom * ratio))
+        const worldX = (pinch.centerScreenX - cx) / pinch.startZoom + pinch.startPan.x
+        const worldY = (pinch.centerScreenY - cy) / pinch.startZoom + pinch.startPan.y
+        setViewState({
+          zoom: newZoom,
+          pan: {
+            x: worldX - (center.screenX - cx) / newZoom,
+            y: worldY - (center.screenY - cy) / newZoom,
+          },
+        })
+      }
+      else if (e.touches.length === 1 && dragRef.current !== null) {
+        e.preventDefault()
+        const { screenX, screenY } = getTouchScreenCoords(e.touches[0])
+        const { x: worldX, y: worldY } = screenToWorld(screenX, screenY)
+        const p = clampToTile({ x: worldX, y: worldY }, TILE_SIZE)
+        const current = useTilingStore.getState().shapePoints ?? getDefaultShapePoints(useTilingStore.getState().baseShape, TILE_SIZE)
+        const next = updatePointAt(current, dragRef.current, p)
+        setShapePoints(next)
+      }
+    }
+
+    const onTouchEnd = (e: TouchEvent) => {
+      if (e.touches.length < 2) {
+        pinchRef.current = null
+      }
+      if (e.touches.length === 0) {
+        dragRef.current = null
+      }
+    }
+
     canvas.addEventListener('mousedown', onMouseDown)
     window.addEventListener('mousemove', onMouseMove)
     window.addEventListener('mouseup', onMouseUp)
+    canvas.addEventListener('touchstart', onTouchStart, { passive: false })
+    canvas.addEventListener('touchmove', onTouchMove, { passive: false })
+    canvas.addEventListener('touchend', onTouchEnd, { passive: false })
+    canvas.addEventListener('touchcancel', onTouchEnd, { passive: false })
     return () => {
       canvas.removeEventListener('mousedown', onMouseDown)
       window.removeEventListener('mousemove', onMouseMove)
       window.removeEventListener('mouseup', onMouseUp)
+      canvas.removeEventListener('touchstart', onTouchStart)
+      canvas.removeEventListener('touchmove', onTouchMove)
+      canvas.removeEventListener('touchend', onTouchEnd)
+      canvas.removeEventListener('touchcancel', onTouchEnd)
     }
   }, [wallpaperGroup, setShapePoints])
 
   if (!wallpaperGroup) {
     return (
-      <div className="flex h-full min-h-[600px] flex-1 flex-col items-center justify-center rounded-lg border-2 border-gray-200 bg-gray-50">
-        <p className="text-center text-lg text-gray-500">{t('canvas.placeholder')}</p>
+      <div className="flex h-full min-h-[300px] flex-1 flex-col items-center justify-center rounded-lg border-2 border-gray-200 bg-gray-50 sm:min-h-[400px]">
+        <p className="text-center text-base text-gray-500 sm:text-lg">{t('canvas.placeholder')}</p>
       </div>
     )
   }
@@ -268,12 +374,12 @@ export function TilingCanvas() {
   return (
     <div
       ref={containerRef}
-      className="flex h-full min-h-[600px] flex-1 flex-col rounded-lg border-2 border-gray-200 bg-gray-50"
-      style={{ minWidth: 1, minHeight: 400 }}
+      className="touch-none flex h-full min-h-[300px] flex-1 flex-col rounded-lg border-2 border-gray-200 bg-gray-50 sm:min-h-[400px]"
+      style={{ minWidth: 1, minHeight: 200 }}
     >
       <canvas
         ref={canvasRef}
-        className="h-full w-full max-w-full"
+        className="h-full w-full max-w-full touch-none"
         style={{ display: 'block', width: '100%', height: '100%', backgroundColor: '#e5e7eb' }}
       />
     </div>

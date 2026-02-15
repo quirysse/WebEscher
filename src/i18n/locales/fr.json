@@ -4,6 +4,9 @@
     "subtitle": "Éditeur de pavage de plan inspiré d'Escher"
   },
   "sidebar": {
+    "open": "Ouvrir le menu",
+    "close": "Fermer le menu",
+    "title": "Options",
     "groupSelector": {
       "title": "Configuration de pavage",
       "family": {

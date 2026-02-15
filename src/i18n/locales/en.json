@@ -4,6 +4,9 @@
     "subtitle": "Escher-inspired plane tiling editor"
   },
   "sidebar": {
+    "open": "Open menu",
+    "close": "Close menu",
+    "title": "Options",
     "groupSelector": {
       "title": "Tiling configuration",
       "family": {
