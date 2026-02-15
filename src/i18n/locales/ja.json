@@ -49,6 +49,8 @@
     "toolbar": {
       "reset": "形をリセット",
       "smooth": "辺を滑らかに",
+      "curves": "曲線",
+      "curvature": "曲率",
       "undo": "元に戻す",
       "redo": "やり直す",
       "export": "エクスポート"

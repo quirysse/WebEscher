@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useTilingStore } from '../../store/tilingStore'
 import { generateTileInstances, transformPoint } from '../../engine/tileGenerator'
+import { drawShapePath } from '../../engine/smoothPath'
 import { getDefaultShapePoints } from '../../utils/defaultShape'
 import { updatePointAt, clampToTile } from '../../editor/shapeEditor'
 import { exportCanvasToPNG } from '../../utils/export'
@@ -32,6 +33,8 @@ export function TilingCanvas() {
   const setShapePoints = useTilingStore((s) => s.setShapePoints)
   const getRoleColor = useTilingStore((s) => s.getRoleColor)
   const roleColors = useTilingStore((s) => s.roleColors)
+  const smoothEnabled = useTilingStore((s) => s.smoothEnabled)
+  const smoothTension = useTilingStore((s) => s.smoothTension)
   const dragRef = useRef<number | null>(null)
   const pinchRef = useRef<{
     distance: number
@@ -112,27 +115,15 @@ export function TilingCanvas() {
       ctx.fillStyle = hexToRgba(hex, 0.85)
       ctx.strokeStyle = 'rgba(51,51,77,1)'
       ctx.lineWidth = 2 / zoom
-      ctx.beginPath()
-      ctx.moveTo(worldPoints[0].x, worldPoints[0].y)
-      for (let i = 1; i < worldPoints.length; i++) {
-        ctx.lineTo(worldPoints[i].x, worldPoints[i].y)
-      }
-      ctx.closePath()
+      drawShapePath(ctx, worldPoints, smoothEnabled, smoothTension)
       ctx.fill()
       ctx.stroke()
     }
 
-    // Editor outline (polyline; for splines: store control points and use
-    // ctx.quadraticCurveTo / ctx.bezierCurveTo, or smooth via mid-edge quadraticCurveTo)
     ctx.strokeStyle = 'rgba(102,126,234,1)'
     ctx.lineWidth = 2.5 / zoom
     ctx.setLineDash([8, 4])
-    ctx.beginPath()
-    ctx.moveTo(currentPoints[0].x, currentPoints[0].y)
-    for (let i = 1; i < currentPoints.length; i++) {
-      ctx.lineTo(currentPoints[i].x, currentPoints[i].y)
-    }
-    ctx.closePath()
+    drawShapePath(ctx, currentPoints, smoothEnabled, smoothTension)
     ctx.stroke()
     ctx.setLineDash([])
 
@@ -147,7 +138,7 @@ export function TilingCanvas() {
     }
 
     ctx.restore()
-  }, [wallpaperGroup, baseShape, size.width, size.height, shapePoints, roleColors, getRoleColor, zoom, pan])
+  }, [wallpaperGroup, baseShape, size.width, size.height, shapePoints, roleColors, getRoleColor, zoom, pan, smoothEnabled, smoothTension])
 
   useEffect(() => {
     const canvas = canvasRef.current

@@ -49,6 +49,8 @@
     "toolbar": {
       "reset": "Reset shape",
       "smooth": "Smooth edges",
+      "curves": "Curves",
+      "curvature": "Curvature",
       "undo": "Undo",
       "redo": "Redo",
       "export": "Export"

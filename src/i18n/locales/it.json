@@ -49,6 +49,8 @@
     "toolbar": {
       "reset": "Ripristina forma",
       "smooth": "Smussa i bordi",
+      "curves": "Curve",
+      "curvature": "Curvatura",
       "undo": "Annulla",
       "redo": "Ripeti",
       "export": "Esporta"

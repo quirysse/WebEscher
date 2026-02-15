@@ -41,11 +41,15 @@ interface TilingState {
   shapePoints: Vector2D[] | null
   history: HistoryState | null
   roleColors: string[]
+  smoothEnabled: boolean
+  smoothTension: number
   setWallpaperGroup: (group: WallpaperGroupId | null) => void
   setBaseShape: (shape: BaseShapeId) => void
   setShapePoints: (points: Vector2D[]) => void
   setRoleColor: (index: number, color: string) => void
   getRoleColor: (index: number) => string
+  setSmoothEnabled: (v: boolean) => void
+  setSmoothTension: (v: number) => void
   resetShape: () => void
   undo: () => void
   redo: () => void
@@ -59,6 +63,8 @@ export const useTilingStore = create<TilingState>((set, get) => ({
   shapePoints: null,
   history: null,
   roleColors: [...DEFAULT_PALETTE],
+  smoothEnabled: false,
+  smoothTension: 0.5,
   setWallpaperGroup: (wallpaperGroup) =>
     set({ wallpaperGroup, shapePoints: null, history: null }),
   setBaseShape: (baseShape) =>
@@ -73,6 +79,8 @@ export const useTilingStore = create<TilingState>((set, get) => ({
     const state = get()
     return state.roleColors[index] ?? DEFAULT_PALETTE[index % DEFAULT_PALETTE.length]
   },
+  setSmoothEnabled: (smoothEnabled) => set({ smoothEnabled }),
+  setSmoothTension: (smoothTension) => set({ smoothTension: Math.max(0, Math.min(1, smoothTension)) }),
   setShapePoints: (points) => {
     const state = get()
     const current =
@@ -85,7 +93,7 @@ export const useTilingStore = create<TilingState>((set, get) => ({
     nextHistory = pushHistory(nextHistory, points)
     set({ shapePoints: points, history: nextHistory })
   },
-  resetShape: () => set({ shapePoints: null, history: null }),
+  resetShape: () => set({ shapePoints: null, history: null, smoothEnabled: false }),
   undo: () => {
     const state = get()
     if (!state.history || !historyCanUndo(state.history)) return

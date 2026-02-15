@@ -49,6 +49,8 @@
     "toolbar": {
       "reset": "Restablecer forma",
       "smooth": "Suavizar bordes",
+      "curves": "Curvas",
+      "curvature": "Curvatura",
       "undo": "Deshacer",
       "redo": "Rehacer",
       "export": "Exportar"
