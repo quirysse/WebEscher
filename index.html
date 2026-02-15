@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebEscher - Pavage de Plan Inspiré d'Escher</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>WebEscher</h1>
+            <p>Manipulation de pavage de plan inspirée de l'œuvre d'Escher</p>
+        </header>
+
+        <div class="main-content">
+            <aside class="sidebar">
+                <h2>Configuration de Pavage</h2>
+                <div class="config-group">
+                    <h3>Groupes de Symétrie</h3>
+                    <select id="wallpaperGroup" class="wallpaper-select">
+                        <option value="" disabled selected>Choisir un groupe...</option>
+                        <optgroup label="Oblique">
+                            <option value="p1">p1 - Sans symétrie</option>
+                            <option value="p2">p2 - Rotation 180°</option>
+                        </optgroup>
+                        <optgroup label="Rectangulaire">
+                            <option value="pm">pm - Réflexion verticale</option>
+                            <option value="pg">pg - Glissement</option>
+                            <option value="pmm">pmm - Réflexions perpendiculaires</option>
+                            <option value="pmg">pmg - Réflexion + glissement</option>
+                            <option value="pgg">pgg - Glissements perpendiculaires</option>
+                            <option value="cmm">cmm - Réflexions diagonales</option>
+                        </optgroup>
+                        <optgroup label="Rhombique">
+                            <option value="cm">cm - Réflexion unique</option>
+                        </optgroup>
+                        <optgroup label="Carré">
+                            <option value="p4">p4 - Rotation 90°</option>
+                            <option value="p4m">p4m - Rotation 90° + réflexions</option>
+                            <option value="p4g">p4g - Rotation 90° + glissements</option>
+                        </optgroup>
+                        <optgroup label="Hexagonal">
+                            <option value="p3">p3 - Rotation 120°</option>
+                            <option value="p3m1">p3m1 - Rotation 120° + réflexions</option>
+                            <option value="p31m">p31m - Rotation 120° + réflexions alt.</option>
+                            <option value="p6">p6 - Rotation 60°</option>
+                            <option value="p6m">p6m - Rotation 60° + réflexions</option>
+                        </optgroup>
+                    </select>
+                </div>
+
+                <div class="config-group">
+                    <h3>Forme de Base</h3>
+                    <select id="baseShape" class="shape-select">
+                        <option value="square">Carré</option>
+                        <option value="triangle">Triangle</option>
+                        <option value="hexagon">Hexagone</option>
+                    </select>
+                </div>
+
+                <div class="config-group">
+                    <h3>Contrôles</h3>
+                    <button id="resetShape" class="btn">Réinitialiser la forme</button>
+                    <button id="clearCanvas" class="btn">Effacer tout</button>
+                </div>
+
+                <div class="info">
+                    <h3>Instructions</h3>
+                    <ol>
+                        <li>Choisissez un groupe de symétrie</li>
+                        <li>Sélectionnez une forme de base</li>
+                        <li>Cliquez et faites glisser les points pour modifier la forme</li>
+                        <li>Observez comment toutes les instances se mettent à jour</li>
+                    </ol>
+                </div>
+            </aside>
+
+            <main class="canvas-container">
+                <div class="canvas-wrapper">
+                    <canvas id="tilingCanvas"></canvas>
+                    <canvas id="editorCanvas"></canvas>
+                </div>
+            </main>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
