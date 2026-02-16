@@ -17,17 +17,16 @@ export function createHistory(initial: Vector2D[]): HistoryState {
 }
 
 export function pushHistory(state: HistoryState, next: Vector2D[]): HistoryState {
-  if (state.present.length !== next.length) {
-    return { ...state, present: next }
-  }
-  let same = true
-  for (let i = 0; i < next.length; i++) {
-    if (state.present[i].x !== next[i].x || state.present[i].y !== next[i].y) {
-      same = false
-      break
+  if (state.present.length === next.length) {
+    let same = true
+    for (let i = 0; i < next.length; i++) {
+      if (state.present[i].x !== next[i].x || state.present[i].y !== next[i].y) {
+        same = false
+        break
+      }
     }
+    if (same) return state
   }
-  if (same) return state
 
   const past = [...state.past, state.present]
   if (past.length > MAX_HISTORY) past.shift()

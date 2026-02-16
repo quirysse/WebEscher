@@ -14,14 +14,14 @@ export function LanguageSwitcher() {
   const currentLang = LANGUAGES.find((l) => l.code === current) ?? LANGUAGES[0]
 
   return (
-    <div className="flex items-center gap-1.5">
-      <span className="text-lg leading-none" aria-hidden>
+    <div className="flex items-center gap-1.5 font-emoji">
+      <span className="text-xl leading-none" aria-hidden>
         {currentLang.flag}
       </span>
       <select
         value={current}
         onChange={(e) => i18n.changeLanguage(e.target.value)}
-        className="rounded-md border border-gray-300 bg-white py-1.5 pl-2 pr-7 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        className="font-emoji rounded-md border border-gray-300 bg-white py-1.5 pl-2 pr-7 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
         aria-label="Language"
       >
         {LANGUAGES.map(({ code, label, flag }) => (

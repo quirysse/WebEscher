@@ -3,8 +3,9 @@ import { useTranslation } from 'react-i18next'
 import { useTilingStore } from '../../store/tilingStore'
 import { generateTileInstances, transformPoint } from '../../engine/tileGenerator'
 import { drawShapePath } from '../../engine/smoothPath'
+import { scalePointsAroundCenter } from '../../utils/math'
 import { getDefaultShapePoints } from '../../utils/defaultShape'
-import { updatePointAt, clampToTile } from '../../editor/shapeEditor'
+import { updatePointAt, clampToTile, insertPointAt, hitTestEdge } from '../../editor/shapeEditor'
 import { exportCanvasToPNG } from '../../utils/export'
 import { EXPORT_PNG_EVENT } from '../Sidebar/Toolbar'
 import type { Vector2D } from '../../engine/types'
@@ -35,7 +36,10 @@ export function TilingCanvas() {
   const roleColors = useTilingStore((s) => s.roleColors)
   const smoothEnabled = useTilingStore((s) => s.smoothEnabled)
   const smoothTension = useTilingStore((s) => s.smoothTension)
+  const homothetyEnabled = useTilingStore((s) => s.homothetyEnabled)
+  const homothetyMode = useTilingStore((s) => s.homothetyMode)
   const dragRef = useRef<number | null>(null)
+  const panDragRef = useRef<{ startScreenX: number; startScreenY: number; startPan: { x: number; y: number } } | null>(null)
   const pinchRef = useRef<{
     distance: number
     centerScreenX: number
@@ -109,13 +113,37 @@ export function TilingCanvas() {
     ctx.scale(zoom, zoom)
     ctx.translate(-pan.x, -pan.y)
 
+    const cellCenterProto = { x: TILE_SIZE / 2, y: TILE_SIZE / 2 }
+    const HOMOTHETY_STRENGTH = 0.0012
+    const HOMOTHETY_RADIUS = 250
+
+    function getTileScale(tileCx: number, tileCy: number): number {
+      if (!homothetyEnabled) return 1
+      const dx = tileCx - pan.x
+      const dy = tileCy - pan.y
+      const dist = Math.hypot(dx, dy)
+      switch (homothetyMode) {
+        case 'horizontal':
+          return Math.max(0.15, 1 - HOMOTHETY_STRENGTH * dx)
+        case 'border':
+          return Math.max(0.2, 1 - (dist / HOMOTHETY_RADIUS) * 0.8)
+        case 'hole':
+          return Math.min(1, 0.2 + (dist / HOMOTHETY_RADIUS) * 0.8)
+        default:
+          return 1
+      }
+    }
+
     for (const { transform, roleIndex } of instances) {
       const worldPoints = currentPoints.map((p) => transformPoint(transform, p))
+      const centerWorld = transformPoint(transform, cellCenterProto)
+      const scale = getTileScale(centerWorld.x, centerWorld.y)
+      const pointsToDraw = scale !== 1 ? scalePointsAroundCenter(worldPoints, centerWorld, scale) : worldPoints
       const hex = getRoleColor(roleIndex)
       ctx.fillStyle = hexToRgba(hex, 0.85)
       ctx.strokeStyle = 'rgba(51,51,77,1)'
       ctx.lineWidth = 2 / zoom
-      drawShapePath(ctx, worldPoints, smoothEnabled, smoothTension)
+      drawShapePath(ctx, pointsToDraw, smoothEnabled, smoothTension)
       ctx.fill()
       ctx.stroke()
     }
@@ -138,7 +166,7 @@ export function TilingCanvas() {
     }
 
     ctx.restore()
-  }, [wallpaperGroup, baseShape, size.width, size.height, shapePoints, roleColors, getRoleColor, zoom, pan, smoothEnabled, smoothTension])
+  }, [wallpaperGroup, baseShape, size.width, size.height, shapePoints, roleColors, getRoleColor, zoom, pan, smoothEnabled, smoothTension, homothetyEnabled, homothetyMode])
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -177,9 +205,71 @@ export function TilingCanvas() {
 
   useEffect(() => {
     const onExport = () => {
-      if (canvasRef.current && wallpaperGroup) {
-        exportCanvasToPNG(canvasRef.current, 'webescher.png')
+      const canvas = canvasRef.current
+      if (!canvas || !wallpaperGroup) return
+      const width = canvas.width
+      const height = canvas.height
+      const state = useTilingStore.getState()
+      const currentPoints = state.shapePoints ?? getDefaultShapePoints(state.baseShape, TILE_SIZE)
+      const { zoom, pan } = zoomPanRef.current
+      const cx = width / 2
+      const cy = height / 2
+      const margin = TILE_SIZE * 4
+      const viewport = {
+        left: pan.x - cx / zoom - margin,
+        top: pan.y - cy / zoom - margin,
+        width: width / zoom + margin * 2,
+        height: height / zoom + margin * 2,
       }
+      const instances = generateTileInstances(wallpaperGroup, TILE_SIZE, viewport)
+      const cellCenterProto = { x: TILE_SIZE / 2, y: TILE_SIZE / 2 }
+      const HOMOTHETY_STRENGTH = 0.0012
+      const HOMOTHETY_RADIUS = 250
+
+      function getTileScaleExport(tileCx: number, tileCy: number): number {
+        if (!state.homothetyEnabled) return 1
+        const dx = tileCx - pan.x
+        const dy = tileCy - pan.y
+        const dist = Math.hypot(dx, dy)
+        switch (state.homothetyMode) {
+          case 'horizontal':
+            return Math.max(0.15, 1 - HOMOTHETY_STRENGTH * dx)
+          case 'border':
+            return Math.max(0.2, 1 - (dist / HOMOTHETY_RADIUS) * 0.8)
+          case 'hole':
+            return Math.min(1, 0.2 + (dist / HOMOTHETY_RADIUS) * 0.8)
+          default:
+            return 1
+        }
+      }
+
+      const off = document.createElement('canvas')
+      off.width = width
+      off.height = height
+      const ctx = off.getContext('2d')
+      if (!ctx) return
+      ctx.fillStyle = '#e5e7eb'
+      ctx.fillRect(0, 0, width, height)
+      ctx.save()
+      ctx.translate(cx, cy)
+      ctx.scale(zoom, zoom)
+      ctx.translate(-pan.x, -pan.y)
+
+      for (const { transform, roleIndex } of instances) {
+        const worldPoints = currentPoints.map((p) => transformPoint(transform, p))
+        const centerWorld = transformPoint(transform, cellCenterProto)
+        const scale = getTileScaleExport(centerWorld.x, centerWorld.y)
+        const pointsToDraw = scale !== 1 ? scalePointsAroundCenter(worldPoints, centerWorld, scale) : worldPoints
+        const hex = state.getRoleColor(roleIndex)
+        ctx.fillStyle = hexToRgba(hex, 0.85)
+        ctx.strokeStyle = 'rgba(51,51,77,1)'
+        ctx.lineWidth = 2 / zoom
+        drawShapePath(ctx, pointsToDraw, state.smoothEnabled, state.smoothTension)
+        ctx.fill()
+        ctx.stroke()
+      }
+      ctx.restore()
+      exportCanvasToPNG(off, 'webescher.png')
     }
     window.addEventListener(EXPORT_PNG_EVENT, onExport)
     return () => window.removeEventListener(EXPORT_PNG_EVENT, onExport)
@@ -221,19 +311,43 @@ export function TilingCanvas() {
       const screenX = (e.clientX - rect.left) * scaleX
       const screenY = (e.clientY - rect.top) * scaleY
       const { x: worldX, y: worldY } = screenToWorld(screenX, screenY)
-      const index = hitTestHandle(worldX, worldY)
-      if (index !== null) {
-        dragRef.current = index
+      const handleIndex = hitTestHandle(worldX, worldY)
+      if (handleIndex !== null) {
+        dragRef.current = handleIndex
+        return
       }
+      const currentPoints = getCurrentPoints()
+      const edgeHit = hitTestEdge(currentPoints, worldX, worldY)
+      if (edgeHit !== null) {
+        const clamped = clampToTile(edgeHit.projectedPoint, TILE_SIZE)
+        const next = insertPointAt(currentPoints, edgeHit.edgeIndex, clamped)
+        setShapePoints(next)
+        dragRef.current = edgeHit.edgeIndex + 1
+        return
+      }
+      const { pan } = zoomPanRef.current
+      panDragRef.current = { startScreenX: screenX, startScreenY: screenY, startPan: { ...pan } }
     }
 
     const onMouseMove = (e: MouseEvent) => {
-      if (dragRef.current === null) return
       const rect = canvas.getBoundingClientRect()
       const scaleX = canvas.width / rect.width
       const scaleY = canvas.height / rect.height
       const screenX = (e.clientX - rect.left) * scaleX
       const screenY = (e.clientY - rect.top) * scaleY
+      const pd = panDragRef.current
+      if (pd) {
+        const zoom = zoomPanRef.current.zoom
+        setViewState((prev) => ({
+          ...prev,
+          pan: {
+            x: pd.startPan.x - (screenX - pd.startScreenX) / zoom,
+            y: pd.startPan.y - (screenY - pd.startScreenY) / zoom,
+          },
+        }))
+        return
+      }
+      if (dragRef.current === null) return
       const { x: worldX, y: worldY } = screenToWorld(screenX, screenY)
       const p = clampToTile({ x: worldX, y: worldY }, TILE_SIZE)
       const current = useTilingStore.getState().shapePoints ?? getDefaultShapePoints(useTilingStore.getState().baseShape, TILE_SIZE)
@@ -242,6 +356,7 @@ export function TilingCanvas() {
     }
 
     const onMouseUp = () => {
+      panDragRef.current = null
       dragRef.current = null
     }
 
@@ -289,9 +404,23 @@ export function TilingCanvas() {
       else if (e.touches.length === 1 && !pinchRef.current) {
         const { screenX, screenY } = getTouchScreenCoords(e.touches[0])
         const { x: worldX, y: worldY } = screenToWorld(screenX, screenY)
-        const index = hitTestHandle(worldX, worldY)
-        if (index !== null) {
-          dragRef.current = index
+        const handleIndex = hitTestHandle(worldX, worldY)
+        if (handleIndex !== null) {
+          dragRef.current = handleIndex
+        }
+        else {
+          const currentPoints = getCurrentPoints()
+          const edgeHit = hitTestEdge(currentPoints, worldX, worldY)
+          if (edgeHit !== null) {
+            const clamped = clampToTile(edgeHit.projectedPoint, TILE_SIZE)
+            const next = insertPointAt(currentPoints, edgeHit.edgeIndex, clamped)
+            setShapePoints(next)
+            dragRef.current = edgeHit.edgeIndex + 1
+          }
+          else {
+            const { pan } = zoomPanRef.current
+            panDragRef.current = { startScreenX: screenX, startScreenY: screenY, startPan: { ...pan } }
+          }
         }
       }
     }
@@ -316,14 +445,29 @@ export function TilingCanvas() {
           },
         })
       }
-      else if (e.touches.length === 1 && dragRef.current !== null) {
-        e.preventDefault()
-        const { screenX, screenY } = getTouchScreenCoords(e.touches[0])
-        const { x: worldX, y: worldY } = screenToWorld(screenX, screenY)
-        const p = clampToTile({ x: worldX, y: worldY }, TILE_SIZE)
-        const current = useTilingStore.getState().shapePoints ?? getDefaultShapePoints(useTilingStore.getState().baseShape, TILE_SIZE)
-        const next = updatePointAt(current, dragRef.current, p)
-        setShapePoints(next)
+      else if (e.touches.length === 1) {
+        const pd = panDragRef.current
+        if (pd) {
+          e.preventDefault()
+          const { screenX, screenY } = getTouchScreenCoords(e.touches[0])
+          const zoom = zoomPanRef.current.zoom
+          setViewState((prev) => ({
+            ...prev,
+            pan: {
+              x: pd.startPan.x - (screenX - pd.startScreenX) / zoom,
+              y: pd.startPan.y - (screenY - pd.startScreenY) / zoom,
+            },
+          }))
+        }
+        else if (dragRef.current !== null) {
+          e.preventDefault()
+          const { screenX, screenY } = getTouchScreenCoords(e.touches[0])
+          const { x: worldX, y: worldY } = screenToWorld(screenX, screenY)
+          const p = clampToTile({ x: worldX, y: worldY }, TILE_SIZE)
+          const current = useTilingStore.getState().shapePoints ?? getDefaultShapePoints(useTilingStore.getState().baseShape, TILE_SIZE)
+          const next = updatePointAt(current, dragRef.current, p)
+          setShapePoints(next)
+        }
       }
     }
 
@@ -332,6 +476,7 @@ export function TilingCanvas() {
         pinchRef.current = null
       }
       if (e.touches.length === 0) {
+        panDragRef.current = null
         dragRef.current = null
       }
     }

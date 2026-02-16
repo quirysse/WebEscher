@@ -1,7 +1,8 @@
 {
   "app": {
     "title": "WebEscher",
-    "subtitle": "Editor de teselados inspirado en Escher"
+    "subtitle": "Editor de teselados inspirado en Escher",
+    "viewCode": "Ver código"
   },
   "sidebar": {
     "open": "Abrir menú",
@@ -51,6 +52,11 @@
       "smooth": "Suavizar bordes",
       "curves": "Curvas",
       "curvature": "Curvatura",
+      "homothety": "Homotecia",
+      "homothetyMode": "Modo",
+      "homothetyHorizontal": "Horizontal (más pequeño a la derecha)",
+      "homothetyBorder": "Borde",
+      "homothetyHole": "Agujero (centro)",
       "undo": "Deshacer",
       "redo": "Rehacer",
       "export": "Exportar"

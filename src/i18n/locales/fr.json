@@ -1,7 +1,8 @@
 {
   "app": {
     "title": "WebEscher",
-    "subtitle": "Éditeur de pavage de plan inspiré d'Escher"
+    "subtitle": "Éditeur de pavage de plan inspiré d'Escher",
+    "viewCode": "Voir le code"
   },
   "sidebar": {
     "open": "Ouvrir le menu",
@@ -51,6 +52,11 @@
       "smooth": "Lisser les bords",
       "curves": "Courbes",
       "curvature": "Courbure",
+      "homothety": "Homothétie",
+      "homothetyMode": "Mode",
+      "homothetyHorizontal": "Horizontal (plus petit à droite)",
+      "homothetyBorder": "Bordure",
+      "homothetyHole": "Trou (centre)",
       "undo": "Annuler",
       "redo": "Rétablir",
       "export": "Exporter"

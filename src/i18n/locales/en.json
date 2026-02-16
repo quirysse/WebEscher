@@ -1,7 +1,8 @@
 {
   "app": {
     "title": "WebEscher",
-    "subtitle": "Escher-inspired plane tiling editor"
+    "subtitle": "Escher-inspired plane tiling editor",
+    "viewCode": "View code"
   },
   "sidebar": {
     "open": "Open menu",
@@ -51,6 +52,11 @@
       "smooth": "Smooth edges",
       "curves": "Curves",
       "curvature": "Curvature",
+      "homothety": "Homothety",
+      "homothetyMode": "Mode",
+      "homothetyHorizontal": "Horizontal (smaller right)",
+      "homothetyBorder": "Border",
+      "homothetyHole": "Hole (center)",
       "undo": "Undo",
       "redo": "Redo",
       "export": "Export"

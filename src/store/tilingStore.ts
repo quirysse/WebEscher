@@ -43,6 +43,8 @@ interface TilingState {
   roleColors: string[]
   smoothEnabled: boolean
   smoothTension: number
+  homothetyEnabled: boolean
+  homothetyMode: 'horizontal' | 'border' | 'hole'
   setWallpaperGroup: (group: WallpaperGroupId | null) => void
   setBaseShape: (shape: BaseShapeId) => void
   setShapePoints: (points: Vector2D[]) => void
@@ -50,6 +52,8 @@ interface TilingState {
   getRoleColor: (index: number) => string
   setSmoothEnabled: (v: boolean) => void
   setSmoothTension: (v: number) => void
+  setHomothetyEnabled: (v: boolean) => void
+  setHomothetyMode: (v: 'horizontal' | 'border' | 'hole') => void
   resetShape: () => void
   undo: () => void
   redo: () => void
@@ -65,6 +69,8 @@ export const useTilingStore = create<TilingState>((set, get) => ({
   roleColors: [...DEFAULT_PALETTE],
   smoothEnabled: false,
   smoothTension: 0.5,
+  homothetyEnabled: false,
+  homothetyMode: 'horizontal',
   setWallpaperGroup: (wallpaperGroup) =>
     set({ wallpaperGroup, shapePoints: null, history: null }),
   setBaseShape: (baseShape) =>
@@ -81,6 +87,8 @@ export const useTilingStore = create<TilingState>((set, get) => ({
   },
   setSmoothEnabled: (smoothEnabled) => set({ smoothEnabled }),
   setSmoothTension: (smoothTension) => set({ smoothTension: Math.max(0, Math.min(1, smoothTension)) }),
+  setHomothetyEnabled: (homothetyEnabled) => set({ homothetyEnabled }),
+  setHomothetyMode: (homothetyMode) => set({ homothetyMode }),
   setShapePoints: (points) => {
     const state = get()
     const current =

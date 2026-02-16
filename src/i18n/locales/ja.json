@@ -1,7 +1,8 @@
 {
   "app": {
     "title": "WebEscher",
-    "subtitle": "エッシャー風平面タイル編集"
+    "subtitle": "エッシャー風平面タイル編集",
+    "viewCode": "コードを見る"
   },
   "sidebar": {
     "open": "メニューを開く",
@@ -51,6 +52,11 @@
       "smooth": "辺を滑らかに",
       "curves": "曲線",
       "curvature": "曲率",
+      "homothety": "相似",
+      "homothetyMode": "モード",
+      "homothetyHorizontal": "横（右ほど小）",
+      "homothetyBorder": "枠",
+      "homothetyHole": "穴（中央）",
       "undo": "元に戻す",
       "redo": "やり直す",
       "export": "エクスポート"

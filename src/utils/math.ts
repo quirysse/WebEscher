@@ -111,3 +111,17 @@ export function reflectY(): AffineTransform {
 export function compose(a: AffineTransform, b: AffineTransform): AffineTransform {
   return multiply(a, b)
 }
+
+/**
+ * Scale points around a center: P' = center + s * (P - center).
+ */
+export function scalePointsAroundCenter(
+  points: Vector2D[],
+  center: Vector2D,
+  s: number
+): Vector2D[] {
+  return points.map((p) => ({
+    x: center.x + s * (p.x - center.x),
+    y: center.y + s * (p.y - center.y),
+  }))
+}

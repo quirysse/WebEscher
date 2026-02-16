@@ -1,7 +1,8 @@
 {
   "app": {
     "title": "WebEscher",
-    "subtitle": "Editor di tassellature ispirato a Escher"
+    "subtitle": "Editor di tassellature ispirato a Escher",
+    "viewCode": "Vedi codice"
   },
   "sidebar": {
     "open": "Apri menu",
@@ -51,6 +52,11 @@
       "smooth": "Smussa i bordi",
       "curves": "Curve",
       "curvature": "Curvatura",
+      "homothety": "Omotetia",
+      "homothetyMode": "Modalità",
+      "homothetyHorizontal": "Orizzontale (più piccolo a destra)",
+      "homothetyBorder": "Bordo",
+      "homothetyHole": "Buco (centro)",
       "undo": "Annulla",
       "redo": "Ripeti",
       "export": "Esporta"

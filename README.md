@@ -2,22 +2,7 @@
 
 Escher-like periodic pavement editing. React + TypeScript + Vite — 17 wallpaper groups.
 
-## Deployment (Clever Cloud)
-
-Create a **Static** application and set these **environment variables** in the Clever Cloud console (Application → Environment variables):
-
-| Variable | Value | Description |
-|----------|--------|-------------|
-| `CC_WEBROOT` | `/dist` | Directory served as the site root (Vite build output). |
-| `CC_PRE_BUILD_HOOK` | `npm ci` or `npm install` | Install dependencies before build. |
-| `CC_POST_BUILD_HOOK` | `npm run build` | Run the Vite build (outputs to `dist/`). |
-
-Optional:
-
-- **`CC_OVERRIDE_BUILDCACHE`** — Paths to cache between builds (e.g. `node_modules`).
-- **`CC_CUSTOM_BUILD_TOOL`** — e.g. `pnpm` if you use pnpm instead of npm.
-
-The `clevercloud/http.json` already sets `document_root` to `dist`; the env vars above drive the build steps. Redeploy after changing variables.
+**Demo:** [https://webescher.igloox.com/](https://webescher.igloox.com/)
 
 ---
 
