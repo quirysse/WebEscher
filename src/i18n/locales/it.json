@@ -2,7 +2,8 @@
   "app": {
     "title": "WebEscher",
     "subtitle": "Editor di tassellature ispirato a Escher",
-    "viewCode": "Vedi codice"
+    "viewCode": "Vedi codice",
+    "help": "Documentazione"
   },
   "sidebar": {
     "open": "Apri menu",
@@ -36,7 +37,24 @@
       "p3m1": "p3m1 – Rotazione 120° + riflessioni",
       "p31m": "p31m – Rotazione 120° + riflessioni (alt.)",
       "p6": "p6 – Rotazione 60°",
-      "p6m": "p6m – Rotazione 60° + riflessioni"
+      "p6m": "p6m – Rotazione 60° + riflessioni",
+      "p1Help": "Solo traslazioni.",
+      "p2Help": "Traslazioni e rotazione 180°.",
+      "pmHelp": "Riflessione verticale.",
+      "pgHelp": "Riflessione con scivolamento.",
+      "pmmHelp": "Due riflessioni perpendicolari.",
+      "pmgHelp": "Riflessione e scivolamento.",
+      "pggHelp": "Due scivolamenti perpendicolari.",
+      "cmmHelp": "Riflessioni diagonali.",
+      "cmHelp": "Una riflessione (cella rombica).",
+      "p4Help": "Rotazione 90° (4-fold).",
+      "p4mHelp": "Rotazione 90° e riflessioni.",
+      "p4gHelp": "Rotazione 90° e scivolamenti.",
+      "p3Help": "Rotazione 120° (3-fold).",
+      "p3m1Help": "Rotazione 120° e riflessioni.",
+      "p31mHelp": "Rotazione 120° e riflessioni (alt.).",
+      "p6Help": "Rotazione 60° (6-fold).",
+      "p6mHelp": "Rotazione 60° e riflessioni."
     },
     "shapeSelector": {
       "title": "Forma base",

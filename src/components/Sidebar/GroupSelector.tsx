@@ -50,6 +50,7 @@ export function GroupSelector() {
                     <button
                       type="button"
                       onClick={() => setWallpaperGroup(g.id)}
+                      title={t(`sidebar.groups.${g.id}Help`)}
                       className={`flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-sm transition-colors ${
                         wallpaperGroup === g.id
                           ? 'bg-indigo-100 text-indigo-800'

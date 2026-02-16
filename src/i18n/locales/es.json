@@ -2,7 +2,8 @@
   "app": {
     "title": "WebEscher",
     "subtitle": "Editor de teselados inspirado en Escher",
-    "viewCode": "Ver código"
+    "viewCode": "Ver código",
+    "help": "Documentación"
   },
   "sidebar": {
     "open": "Abrir menú",
@@ -36,7 +37,24 @@
       "p3m1": "p3m1 – Rotación 120° + reflexiones",
       "p31m": "p31m – Rotación 120° + reflexiones (alt.)",
       "p6": "p6 – Rotación 60°",
-      "p6m": "p6m – Rotación 60° + reflexiones"
+      "p6m": "p6m – Rotación 60° + reflexiones",
+      "p1Help": "Solo traslaciones.",
+      "p2Help": "Traslaciones y rotación 180°.",
+      "pmHelp": "Reflexión vertical.",
+      "pgHelp": "Reflexión con deslizamiento.",
+      "pmmHelp": "Dos reflexiones perpendiculares.",
+      "pmgHelp": "Reflexión y deslizamiento.",
+      "pggHelp": "Dos deslizamientos perpendiculares.",
+      "cmmHelp": "Reflexiones diagonales.",
+      "cmHelp": "Una reflexión (celda rómbica).",
+      "p4Help": "Rotación 90° (4-fold).",
+      "p4mHelp": "Rotación 90° y reflexiones.",
+      "p4gHelp": "Rotación 90° y deslizamientos.",
+      "p3Help": "Rotación 120° (3-fold).",
+      "p3m1Help": "Rotación 120° y reflexiones.",
+      "p31mHelp": "Rotación 120° y reflexiones (alt.).",
+      "p6Help": "Rotación 60° (6-fold).",
+      "p6mHelp": "Rotación 60° y reflexiones."
     },
     "shapeSelector": {
       "title": "Forma base",

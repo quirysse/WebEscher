@@ -1,79 +1,35 @@
 # WebEscher
 
-Escher-like periodic pavement editing. React + TypeScript + Vite — 17 wallpaper groups.
+Escher-like **periodic plane tiling** editor. Create motifs in a fundamental cell; the app repeats them using the 17 **wallpaper groups** (plane crystallographic groups). React + TypeScript + Vite.
 
 **Demo:** [https://webescher.igloox.com/](https://webescher.igloox.com/)
 
 ---
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Pedagogy
 
-Currently, two official plugins are available:
+WebEscher is meant to help understand:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- The **17 wallpaper groups**: the complete classification of repeating 2D patterns (translations, rotations, reflections, glide reflections).
+- How **symmetries** combine: e.g. p4 (90° rotation), p6 (60° rotation), pm (mirror), pg (glide).
+- Real-world examples: the **Alhambra** (Grenade), Islamic tilings, and M. C. Escher’s work.
 
-## React Compiler
+You edit one **prototype tile**; the chosen group’s symmetries fill the plane. Optional **homothety** modes change the scale of the tiling by position (horizontal gradient, border frame, or central “hole”).
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## Documentation
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- [**Symmetries**](docs/SYMMETRIES.md) — The 17 groups by family, with short descriptions and code IDs.
+- [**Examples**](docs/EXAMPLES.md) — How to read and try symmetries in the app.
+- [**Alhambra**](docs/ALHAMBRA.md) — Tilings in art and architecture (Alhambra, Escher, zelliges).
+- [**Transformations**](docs/TRANSFORMATIONS.md) — Translation, rotations, reflections, glides, and homothety in the app.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+---
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Tech
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- **Requirements:** Node.js 18+
+- **Install:** `npm install`
+- **Dev:** `npm run dev`
+- **Build:** `npm run build`

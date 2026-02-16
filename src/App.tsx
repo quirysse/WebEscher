@@ -54,6 +54,15 @@ function App() {
             <p className="truncate text-xs text-slate-600 sm:text-sm">{t('app.subtitle')}</p>
           </div>
           <a
+            href="https://github.com/quirysse/WebEscher/tree/main/docs"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex shrink-0 items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50 sm:gap-2.5 sm:px-4 sm:py-2.5 sm:text-base"
+            aria-label={t('app.help')}
+          >
+            <span>{t('app.help')}</span>
+          </a>
+          <a
             href="https://github.com/quirysse/WebEscher"
             target="_blank"
             rel="noopener noreferrer"

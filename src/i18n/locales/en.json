@@ -2,7 +2,8 @@
   "app": {
     "title": "WebEscher",
     "subtitle": "Escher-inspired plane tiling editor",
-    "viewCode": "View code"
+    "viewCode": "View code",
+    "help": "Documentation"
   },
   "sidebar": {
     "open": "Open menu",
@@ -36,7 +37,24 @@
       "p3m1": "p3m1 – 120° rotation + reflections",
       "p31m": "p31m – 120° rotation + reflections (alt.)",
       "p6": "p6 – 60° rotation",
-      "p6m": "p6m – 60° rotation + reflections"
+      "p6m": "p6m – 60° rotation + reflections",
+      "p1Help": "Translations only.",
+      "p2Help": "Translations and 180° rotation.",
+      "pmHelp": "Vertical reflection.",
+      "pgHelp": "Glide reflection.",
+      "pmmHelp": "Two perpendicular reflections.",
+      "pmgHelp": "Reflection and glide.",
+      "pggHelp": "Two perpendicular glides.",
+      "cmmHelp": "Diagonal reflections.",
+      "cmHelp": "Single reflection (rhombic cell).",
+      "p4Help": "90° rotation (4-fold).",
+      "p4mHelp": "90° rotation and reflections.",
+      "p4gHelp": "90° rotation and glides.",
+      "p3Help": "120° rotation (3-fold).",
+      "p3m1Help": "120° rotation and reflections.",
+      "p31mHelp": "120° rotation and reflections (alt.).",
+      "p6Help": "60° rotation (6-fold).",
+      "p6mHelp": "60° rotation and reflections."
     },
     "shapeSelector": {
       "title": "Base shape",

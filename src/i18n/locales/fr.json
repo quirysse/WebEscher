@@ -2,7 +2,8 @@
   "app": {
     "title": "WebEscher",
     "subtitle": "Éditeur de pavage de plan inspiré d'Escher",
-    "viewCode": "Voir le code"
+    "viewCode": "Voir le code",
+    "help": "Documentation"
   },
   "sidebar": {
     "open": "Ouvrir le menu",
@@ -36,7 +37,24 @@
       "p3m1": "p3m1 – Rotation 120° + réflexions",
       "p31m": "p31m – Rotation 120° + réflexions (alt.)",
       "p6": "p6 – Rotation 60°",
-      "p6m": "p6m – Rotation 60° + réflexions"
+      "p6m": "p6m – Rotation 60° + réflexions",
+      "p1Help": "Translations uniquement.",
+      "p2Help": "Translations et rotation 180°.",
+      "pmHelp": "Réflexion verticale.",
+      "pgHelp": "Réflexion-glissement.",
+      "pmmHelp": "Deux réflexions perpendiculaires.",
+      "pmgHelp": "Réflexion et glissement.",
+      "pggHelp": "Deux glissements perpendiculaires.",
+      "cmmHelp": "Réflexions diagonales.",
+      "cmHelp": "Une réflexion (cellule rhombique).",
+      "p4Help": "Rotation 90° (ordre 4).",
+      "p4mHelp": "Rotation 90° et réflexions.",
+      "p4gHelp": "Rotation 90° et glissements.",
+      "p3Help": "Rotation 120° (ordre 3).",
+      "p3m1Help": "Rotation 120° et réflexions.",
+      "p31mHelp": "Rotation 120° et réflexions (alt.).",
+      "p6Help": "Rotation 60° (ordre 6).",
+      "p6mHelp": "Rotation 60° et réflexions."
     },
     "shapeSelector": {
       "title": "Forme de base",
