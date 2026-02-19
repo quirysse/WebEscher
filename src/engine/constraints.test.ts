@@ -22,7 +22,6 @@ describe('constraints', () => {
       expect(c[0].edgeB).toEqual([1, 2])
       expect(c[1].edgeA).toEqual([0, 1])
       expect(c[1].edgeB).toEqual([2, 3])
-      const center = { x: 50, y: 50 }
       const onLeft = { x: 0, y: 25 }
       const image = applyToPoint(c[0].transform, onLeft)
       expect(image.x).toBeCloseTo(100, 10)

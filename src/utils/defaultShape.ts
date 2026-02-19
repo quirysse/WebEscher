@@ -15,11 +15,17 @@ export function getDefaultShapePoints(
 
   switch (shapeId) {
     case 'square':
+      // 8 points: corners + edge midpoints so default handles are on edges (interlocking)
+      const half = tileSize / 2
       return [
         { x: 0, y: 0 },
+        { x: half, y: 0 },
         { x: tileSize, y: 0 },
+        { x: tileSize, y: half },
         { x: tileSize, y: tileSize },
+        { x: half, y: tileSize },
         { x: 0, y: tileSize },
+        { x: 0, y: half },
       ]
     case 'triangle':
       return [

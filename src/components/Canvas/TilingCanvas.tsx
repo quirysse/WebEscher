@@ -5,7 +5,7 @@ import { generateTileInstances, transformPoint } from '../../engine/tileGenerato
 import { drawShapePath } from '../../engine/smoothPath'
 import { scalePointsAroundCenter } from '../../utils/math'
 import { getDefaultShapePoints } from '../../utils/defaultShape'
-import { updatePointAt, clampToTile, insertPointAt, hitTestEdge } from '../../editor/shapeEditor'
+import { clampToTile, insertPointAt, hitTestEdge } from '../../editor/shapeEditor'
 import { applyConstraints, getEdgeConstraints } from '../../engine/constraints'
 import { applyToPoint, inverse } from '../../utils/math'
 import { exportCanvasToPNG } from '../../utils/export'
@@ -323,6 +323,7 @@ export function TilingCanvas() {
       if (edgeHit !== null) {
         const clamped = clampToTile(edgeHit.projectedPoint, TILE_SIZE)
         let next = insertPointAt(currentPoints, edgeHit.edgeIndex, clamped)
+        let insertedIndex = edgeHit.edgeIndex + 1
         const constraints = getEdgeConstraints(wallpaperGroup, TILE_SIZE)
         if (constraints.length > 0 && currentPoints.length === 4) {
           const i = edgeHit.edgeIndex
@@ -332,16 +333,18 @@ export function TilingCanvas() {
             const [cB0, cB1] = edgeB
             if (cA0 === i && cA1 === segEnd) {
               next = insertPointAt(next, cB0, applyToPoint(transform, clamped))
+              if (insertedIndex >= cB0 + 1) insertedIndex += 1
               break
             }
             if (cB0 === i && cB1 === segEnd) {
               next = insertPointAt(next, cA0, applyToPoint(inverse(transform), clamped))
+              if (insertedIndex >= cA0 + 1) insertedIndex += 1
               break
             }
           }
         }
         setShapePoints(next)
-        dragRef.current = edgeHit.edgeIndex + 1
+        dragRef.current = insertedIndex
         return
       }
       const { pan } = zoomPanRef.current
@@ -370,7 +373,12 @@ export function TilingCanvas() {
       const { x: worldX, y: worldY } = screenToWorld(screenX, screenY)
       const p = clampToTile({ x: worldX, y: worldY }, TILE_SIZE)
       const current = useTilingStore.getState().shapePoints ?? getDefaultShapePoints(useTilingStore.getState().baseShape, TILE_SIZE)
-      const cornerIndices = current.length === 6 ? ([0, 1, 3, 4] as [number, number, number, number]) : undefined
+      const cornerIndices =
+        current.length === 6
+          ? ([0, 1, 3, 4] as [number, number, number, number])
+          : current.length === 8
+            ? ([0, 2, 4, 6] as [number, number, number, number])
+            : undefined
       const next = applyConstraints(current, dragRef.current, p, wallpaperGroup, TILE_SIZE, cornerIndices)
       setShapePoints(next)
     }
@@ -434,6 +442,7 @@ export function TilingCanvas() {
           if (edgeHit !== null) {
             const clamped = clampToTile(edgeHit.projectedPoint, TILE_SIZE)
             let next = insertPointAt(currentPoints, edgeHit.edgeIndex, clamped)
+            let insertedIndex = edgeHit.edgeIndex + 1
             const constraints = getEdgeConstraints(wallpaperGroup, TILE_SIZE)
             if (constraints.length > 0 && currentPoints.length === 4) {
               const i = edgeHit.edgeIndex
@@ -443,16 +452,18 @@ export function TilingCanvas() {
                 const [cB0, cB1] = edgeB
                 if (cA0 === i && cA1 === segEnd) {
                   next = insertPointAt(next, cB0, applyToPoint(transform, clamped))
+                  if (insertedIndex >= cB0 + 1) insertedIndex += 1
                   break
                 }
                 if (cB0 === i && cB1 === segEnd) {
                   next = insertPointAt(next, cA0, applyToPoint(inverse(transform), clamped))
+                  if (insertedIndex >= cA0 + 1) insertedIndex += 1
                   break
                 }
               }
             }
             setShapePoints(next)
-            dragRef.current = edgeHit.edgeIndex + 1
+            dragRef.current = insertedIndex
           }
           else {
             const { pan } = zoomPanRef.current
@@ -502,7 +513,12 @@ export function TilingCanvas() {
           const { x: worldX, y: worldY } = screenToWorld(screenX, screenY)
           const p = clampToTile({ x: worldX, y: worldY }, TILE_SIZE)
           const current = useTilingStore.getState().shapePoints ?? getDefaultShapePoints(useTilingStore.getState().baseShape, TILE_SIZE)
-          const cornerIndices = current.length === 6 ? ([0, 1, 3, 4] as [number, number, number, number]) : undefined
+          const cornerIndices =
+            current.length === 6
+              ? ([0, 1, 3, 4] as [number, number, number, number])
+              : current.length === 8
+                ? ([0, 2, 4, 6] as [number, number, number, number])
+                : undefined
           const next = applyConstraints(current, dragRef.current, p, wallpaperGroup, TILE_SIZE, cornerIndices)
           setShapePoints(next)
         }
